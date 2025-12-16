@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.johnnette.privychat",
+      "sha256_cert_fingerprints": [
+        "D8:A3:AC:DE:48:86:37:77:7A:E4:86:B8:C5:27:CD:B0:3C:F5:42:07:21:A2:39:61:4D:06:70:D7:D3:4A:08:72"
+      ]
+    }
+  }
+]

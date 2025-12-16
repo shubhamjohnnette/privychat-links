@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "R8RRQD7AM7.com.johnnette.privychat",
+        "paths": ["/join/*"]
+      }
+    ]
+  }
+}

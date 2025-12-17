@@ -96,13 +96,22 @@
         <h1 id="title">Join PrivyChat Room</h1>
 
         <!-- Spinner removed, showing static message -->
-        <p id="message">Click the button below to join the room in the PrivyChat app.</p>
+        <p id="message">Choose a method to open PrivyChat:</p>
 
-        <!-- Button is visible by default (if code exists) -->
-        <a href="#" class="btn" id="openBtn" style="display: none;">Open PrivyChat</a>
+        <!-- Intent Button (Primary for Android) -->
+        <a href="#" class="btn" id="intentBtn" style="display: none;">Open App (Safe)</a>
 
-        <p class="success" id="success">✓ App opened!</p>
-        <p class="note" id="note">If you don't have the app installed, please install it first.</p>
+        <!-- Direct Scheme Button (Fallback) -->
+        <a href="#" class="btn" id="directBtn" style="display: none; background: #888; margin-top: 10px;">Open App
+            (Direct)</a>
+
+        <p class="success" id="success">✓ Opening...</p>
+
+        <!-- Debug info -->
+        <div style="margin-top: 20px; font-size: 10px; color: #ccc; word-break: break-all;">
+            <p>Code: <span id="debugCode"></span></p>
+            <p>Intent: <span id="debugIntent"></span></p>
+        </div>
     </div>
 
     <script>
@@ -111,33 +120,31 @@
 
         const message = document.getElementById("message");
         const success = document.getElementById("success");
-        const openBtn = document.getElementById("openBtn");
-        const note = document.getElementById("note");
+        const intentBtn = document.getElementById("intentBtn");
+        const directBtn = document.getElementById("directBtn");
+
+        document.getElementById("debugCode").textContent = code || "None";
 
         if (code) {
-            // For Android: Use intent URL
+            // 1. Intent URL (Android Standard)
+            // Tries to find package com.johnnette.privychat
             const intentUrl = `intent://join?code=${code}#Intent;scheme=privychat;package=com.johnnette.privychat;end`;
+            document.getElementById("debugIntent").textContent = intentUrl;
 
-            // Fallback for iOS/other platforms
-            const deepLink = `privychat://join?code=${code}`;
+            // 2. Direct Scheme (Fallback)
+            // Just tries privychat://
+            const directUrl = `privychat://join?code=${code}`;
 
-            // Detect platform
-            const isAndroid = /Android/i.test(navigator.userAgent);
-            const finalUrl = isAndroid ? intentUrl : deepLink;
+            // Show Buttons
+            intentBtn.href = intentUrl;
+            intentBtn.style.display = "inline-block";
 
-            // specific fix for iOS or general fallback
-            // If we want to be safe, stick to custom scheme for iOS
+            directBtn.href = directUrl;
+            directBtn.style.display = "inline-block";
 
-            openBtn.href = finalUrl;
-            openBtn.style.display = "inline-block";
-
-            openBtn.onclick = function () {
-                // Show success feedback after click
-                setTimeout(() => {
-                    success.style.display = "block";
-                    message.textContent = "Attempting to open app...";
-                }, 500);
-            };
+            // Click handlers
+            intentBtn.onclick = () => { success.style.display = "block"; };
+            directBtn.onclick = () => { success.style.display = "block"; };
 
         } else {
             // No code provided
